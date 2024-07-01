@@ -51,10 +51,13 @@ int main() {
         }
 
         // Ask for Continuation
-        // cout << "Do you want to ask again?\n Press 'N' and 'Enter' to Exit.\n";
-        // string c = "";
-        // cin >> c;
-        
+        cout << "Do you want to ask again?\n Press 'Y' and Enter to Continue; Press 'N' and 'Enter' to Exit.\n";
+        string c = "";
+        cin >> c;
+        if (c == "Y") {
+            cin.get();  // Consume the \n, there will be a \n left in the buffer which causing getting input immediately
+            continue;
+        }
         break;
     }
     
