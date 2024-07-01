@@ -1,8 +1,10 @@
 #include <iostream>
+#include <sstream>
 #include <random>
 #include <string>
 #include <vector>
 #include <ctime>
+
 
 using namespace std;
 
@@ -12,29 +14,48 @@ void init() {
     cout.tie(nullptr);
 }
 
+void showContent(vector<string>& pool) {
+    int n = pool.size(), i = 0;
+    for (; i < n - 1; i++) {
+        cout << pool[i] << " ";
+    }
+    cout << pool[i] << "\n";
+}
+
 int main() {
     init();
-    string n = "";
+    string line = "";
     vector<string> pool;
-    cout << "please enter options\n";
+    
     while (1) {
         pool.clear();
-        while (cin >> n) {
-            pool.emplace_back(n);
-            if (cin.get() == '\n') break;
+        cout << "please enter options\n";
+
+        // Getting Options inputs
+        getline(cin, line);
+        if (line.empty()) break;    // Empty
+        istringstream ss(line);
+        string n = "";
+        while (ss >> n) pool.emplace_back(n);
+        
+        // Core Logic
+        if (pool.empty()) {
+            cout << "You haven't provided anything yet.\n";
+            continue;
         }
-        int k = pool.size();
-        if(!k) cout << "等下先。\n";
         else {
-            uniform_int_distribution<int> d(0, k - 1);
+            showContent(pool);
+            uniform_int_distribution<int> d(0, pool.size() - 1);
             mt19937 en(time(nullptr));
             cout << pool[d(en)] << "\n";
         }
 
-        cout << "Do you want to ask again?\n Input 'Y' then Press 'Enter' to continue; Press 'N' and 'Enter' to Exit.\n";
-        string c = "";
-        cin >> c;
-        if (c == "N") break;
+        // Ask for Continuation
+        // cout << "Do you want to ask again?\n Press 'N' and 'Enter' to Exit.\n";
+        // string c = "";
+        // cin >> c;
+        
+        break;
     }
     
     return 0;
