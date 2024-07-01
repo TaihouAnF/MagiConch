@@ -16,8 +16,9 @@ int main() {
     init();
     string n = "";
     vector<string> pool;
+    cout << "please enter options\n";
     while (1) {
-        cout << "please enter options" << "\n";
+        pool.clear();
         while (cin >> n) {
             pool.emplace_back(n);
             if (cin.get() == '\n') break;
@@ -29,6 +30,11 @@ int main() {
             mt19937 en(time(nullptr));
             cout << pool[d(en)] << "\n";
         }
+
+        cout << "Do you want to ask again?\n Input 'Y' then Press 'Enter' to continue; Press 'N' and 'Enter' to Exit.\n";
+        string c = "";
+        cin >> c;
+        if (c == "N") break;
     }
     
     return 0;
