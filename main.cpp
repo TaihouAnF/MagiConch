@@ -33,7 +33,10 @@ int main() {
 
         // Getting Options inputs
         getline(cin, line);
-        if (line.empty()) break;    // Empty
+        if (line.empty()) {
+            cout << "You haven't provided anything yet.\n";
+            continue;
+        }
         istringstream ss(line);
         string n = "";
         while (ss >> n) pool.emplace_back(n);
@@ -51,7 +54,7 @@ int main() {
         }
 
         // Ask for Continuation
-        cout << "Do you want to ask again?\n Press 'Y' and Enter to Continue; Press 'N' and 'Enter' to Exit.\n";
+        cout << "Do you want to ask again?\n Press 'Y' and 'Enter' to Continue; Press 'N' and 'Enter' to Exit.\n";
         string c = "";
         cin >> c;
         if (c == "Y") {
