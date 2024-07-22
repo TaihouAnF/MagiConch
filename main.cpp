@@ -15,6 +15,7 @@ void init() {
 }
 
 void showContent(vector<string>& pool) {
+    cout << "You've entered:\n";
     int n = pool.size(), i = 0;
     for (; i < n - 1; i++) {
         cout << pool[i] << " ";
@@ -50,7 +51,7 @@ int main() {
             showContent(pool);
             uniform_int_distribution<int> d(0, pool.size() - 1);
             mt19937 en(time(nullptr));
-            cout << pool[d(en)] << "\n";
+            cout << "I suggest you choose: " << pool[d(en)] << "\n";
         }
 
         // Ask for Continuation
