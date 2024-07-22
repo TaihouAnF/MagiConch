@@ -51,7 +51,7 @@ int main() {
             showContent(pool);
             uniform_int_distribution<int> d(0, pool.size() - 1);
             mt19937 en(time(nullptr));
-            cout << "I suggest you choose: " << pool[d(en)] << "\n";
+            cout << "I suggest you choose: " << pool[d(en)] << "\n";a
         }
 
         // Ask for Continuation
