@@ -24,8 +24,9 @@ void showContent(vector<string>& pool) {
 }
 
 int randGenerate(int range) {
+    random_device rd;
     uniform_int_distribution<int> d(0, range - 1);
-    mt19937 en(time(nullptr));
+    mt19937 en(rd());
     return d(en);
 }
 
@@ -68,13 +69,19 @@ void showBoard(vector<vector<int>>& board) {
     }
 }
 
+vector<vector<int>> generateBoard(int n) {
+    vector<vector<int>> res_board(n, vector<int>(n));
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < n; ++j) {
+            res_board[i][j] = randGenerate(2);
+        }
+    }
+    return res_board;
+}
+
 int main() {
     string line = "";
     vector<string> pool;
-    vector<vector<int>> b = {{1, 0, 0, 1}, 
-                             {0, 1, 1, 1},
-                             {0, 0, 0, 1},
-                             {1, 0, 1, 1}};
     
     while (1) {
         cout << "please enter options, 0 for RNG, 1 for board.\n";
@@ -86,13 +93,13 @@ int main() {
             pool.clear();
         } else if (o == "1") {
             // Show the board first
+            vector<vector<int>> b = generateBoard(4);
             showBoard(b);
         } else {
             cout << "invalid option";
         }
         // Ask for Continuation
         cout << "Do you want to ask again?\n Press 'Y' and 'Enter' to Continue; Press 'N' and 'Enter' to Exit.\n";
-        // string c = "";
         getline(cin, o);
         if (o == "Y" || o == "y") { continue; }
         break;
