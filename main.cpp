@@ -8,11 +8,11 @@
 
 using namespace std;
 
-void init() {
+auto init = []{
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
     cout.tie(nullptr);
-}
+};
 
 void showContent(vector<string>& pool) {
     cout << "You've entered:\n";
@@ -23,37 +23,39 @@ void showContent(vector<string>& pool) {
     cout << pool[i] << "\n";
 }
 
+void MakeChoice(vector<string>& pool) {
+    string line = "";
+    // Getting Options inputs
+    getline(cin, line);
+    if (line.empty()) {
+        cout << "You haven't provided anything yet.\n";
+        return;
+    }
+    istringstream ss(line);
+    string n = "";
+    while (ss >> n) pool.emplace_back(n);
+    
+    // Core Logic
+    if (pool.empty()) {
+        cout << "You haven't provided anything yet.\n";
+        return;
+    } else {
+        showContent(pool);
+        uniform_int_distribution<int> d(0, pool.size() - 1);
+        mt19937 en(time(nullptr));
+        cout << "I suggest you choose: " << pool[d(en)] << "\n";
+    }
+}
+
 int main() {
-    init();
+    // init();
     string line = "";
     vector<string> pool;
     
     while (1) {
-        pool.clear();
         cout << "please enter options\n";
-
-        // Getting Options inputs
-        getline(cin, line);
-        if (line.empty()) {
-            cout << "You haven't provided anything yet.\n";
-            continue;
-        }
-        istringstream ss(line);
-        string n = "";
-        while (ss >> n) pool.emplace_back(n);
-        
-        // Core Logic
-        if (pool.empty()) {
-            cout << "You haven't provided anything yet.\n";
-            continue;
-        }
-        else {
-            showContent(pool);
-            uniform_int_distribution<int> d(0, pool.size() - 1);
-            mt19937 en(time(nullptr));
-            cout << "I suggest you choose: " << pool[d(en)] << "\n";
-        }
-
+        MakeChoice(pool);
+        pool.clear();
         // Ask for Continuation
         cout << "Do you want to ask again?\n Press 'Y' and 'Enter' to Continue; Press 'N' and 'Enter' to Exit.\n";
         string c = "";
