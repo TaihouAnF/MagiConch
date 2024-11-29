@@ -23,7 +23,13 @@ void showContent(vector<string>& pool) {
     cout << pool[i] << "\n";
 }
 
-void MakeChoice(vector<string>& pool) {
+int randGenerate(int range) {
+    uniform_int_distribution<int> d(0, range - 1);
+    mt19937 en(time(nullptr));
+    return d(en);
+}
+
+void makeChoice(vector<string>& pool) {
     string line = "";
     // Getting Options inputs
     getline(cin, line);
@@ -41,29 +47,54 @@ void MakeChoice(vector<string>& pool) {
         return;
     } else {
         showContent(pool);
-        uniform_int_distribution<int> d(0, pool.size() - 1);
-        mt19937 en(time(nullptr));
-        cout << "I suggest you choose: " << pool[d(en)] << "\n";
+        // uniform_int_distribution<int> d(0, pool.size() - 1);
+        // mt19937 en(time(nullptr));
+        cout << "I suggest you choose: " << pool[randGenerate(pool.size())] << "\n";
+    }
+}
+
+void showBoard(vector<vector<int>>& board) {
+    if (board.size() == 0 || board[0].size() == 0) {
+        cout << "You don't have a valid board.\n";
+        return;
+    }
+    int n = board.size(), m = board[0].size();
+    for (int i = 0; i < n; ++i) {
+        // Last one doesn't need a space, but would require a new line
+        for (int j = 0; j < m - 1; ++j) {
+            cout << board[i][j] << " ";
+        }
+        cout << board[i][m - 1] << "\n";
     }
 }
 
 int main() {
-    // init();
     string line = "";
     vector<string> pool;
+    vector<vector<int>> b = {{1, 0, 0, 1}, 
+                             {0, 1, 1, 1},
+                             {0, 0, 0, 1},
+                             {1, 0, 1, 1}};
     
     while (1) {
-        cout << "please enter options\n";
-        MakeChoice(pool);
-        pool.clear();
+        cout << "please enter options, 0 for RNG, 1 for board.\n";
+        string o = "";
+        getline(cin, o);
+        // Dinner option RNG
+        if (o == "0") {
+            makeChoice(pool);
+            pool.clear();
+        } else if (o == "1") {
+            // Show the board first
+            showBoard(b);
+        } else {
+            cout << "invalid option";
+        }
         // Ask for Continuation
         cout << "Do you want to ask again?\n Press 'Y' and 'Enter' to Continue; Press 'N' and 'Enter' to Exit.\n";
-        string c = "";
-        cin >> c;
-        if (c == "Y" || c == "y") {
-            cin.get();  // Consume the \n, there will be a \n left in the buffer which causing getting input immediately
-            continue;
-        }
+        // string c = "";
+        getline(cin, o);
+        if (o == "Y" || o == "y") { continue; }
         break;
     }
     
