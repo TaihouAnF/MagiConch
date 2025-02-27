@@ -12,6 +12,7 @@ auto init = []{
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
     cout.tie(nullptr);
+    return 0;
 };
 
 void showContent(vector<string>& pool) {
@@ -79,9 +80,34 @@ vector<vector<int>> generateBoard(int n) {
     return res_board;
 }
 
+int partition(vector<int>& nums, int low, int high) {
+    int pivot = nums[high];
+    int i = low - 1;
+
+    for (int j = low; j < high; ++j) {
+        if (nums[j] < pivot) {
+            i++;
+            swap(nums[i], nums[j]);
+        }
+    }
+
+    swap(nums[i + 1], nums[high]);
+    return i + 1;
+}
+
+void quicksort(vector<int>& nums, int low, int high) {
+    if (low <= high) {
+        int pivot = partition(nums, low, high);
+        quicksort(nums, low, pivot - 1);
+        quicksort(nums, pivot + 1, high);
+    }
+}
+
+
 int main() {
     string line = "";
     vector<string> pool;
+    vector<int> nums = {0, 2, 9, 3, 6, 1};
     
     while (1) {
         cout << "please enter options, 0 for RNG, 1 for board.\n";
@@ -95,8 +121,20 @@ int main() {
             // Show the board first
             vector<vector<int>> b = generateBoard(4);
             showBoard(b);
+        } else if (o == "2") {
+            quicksort(nums, 0, nums.size() - 1);
+            for (auto& n : nums) {
+                cout << n << " ";
+            }
+            cout << std::endl;
         } else {
-            cout << "invalid option";
+            vector<int> test = {0, 1, 2, 3, 4, 5};
+            std::fill(test.begin(), test.begin() + 1, 9);
+            for (auto& e : test) {
+                cout << e << " ";
+            }
+            cout << "\n";
+            cout << "invalid option\n";
         }
         // Ask for Continuation
         cout << "Do you want to ask again?\n Press 'Y' and 'Enter' to Continue; Press 'N' and 'Enter' to Exit.\n";
