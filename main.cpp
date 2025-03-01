@@ -83,34 +83,53 @@ vector<vector<int>> generateBoard(int n) {
 int partition(vector<int>& nums, int low, int high) {
     int pivot = nums[high];
     int i = low - 1;
-
     for (int j = low; j < high; ++j) {
         if (nums[j] < pivot) {
-            i++;
+            ++i;
             swap(nums[i], nums[j]);
+
         }
     }
-
     swap(nums[i + 1], nums[high]);
     return i + 1;
 }
 
 void quicksort(vector<int>& nums, int low, int high) {
     if (low <= high) {
-        int pivot = partition(nums, low, high);
-        quicksort(nums, low, pivot - 1);
-        quicksort(nums, pivot + 1, high);
+        int p = partition(nums, low, high);
+        quicksort(nums, low, p - 1);
+        quicksort(nums, p + 1, high);
     }
 }
 
+void enterNumber(vector<int>& nums) {
+    string line = "";
+    getline(cin, line);
+    if (line.empty()) {
+        cout << "You haven't provided anything yet.\n";
+        return;
+    }
+    istringstream ss(line);
+    string n = "";
+    while (ss >> n) nums.emplace_back(std::stoi(n));
+
+    if (nums.empty()) {
+        cout << "You haven't entered anything.\n";
+    } else {
+        quicksort(nums, 0, nums.size() - 1);
+        for (auto& i : nums) {
+            cout << i << " ";
+        }
+    }
+}
 
 int main() {
     string line = "";
     vector<string> pool;
-    vector<int> nums = {0, 2, 9, 3, 6, 1};
+    vector<int> nums;
     
     while (1) {
-        cout << "please enter options, 0 for RNG, 1 for board.\n";
+        cout << "please enter options, 0 for RNG, 1 for board, 2 for quick sort\n";
         string o = "";
         getline(cin, o);
         // Dinner option RNG
@@ -122,11 +141,9 @@ int main() {
             vector<vector<int>> b = generateBoard(4);
             showBoard(b);
         } else if (o == "2") {
-            quicksort(nums, 0, nums.size() - 1);
-            for (auto& n : nums) {
-                cout << n << " ";
-            }
+            enterNumber(nums);
             cout << std::endl;
+            nums.clear();
         } else {
             vector<int> test = {0, 1, 2, 3, 4, 5};
             std::fill(test.begin(), test.begin() + 1, 9);
@@ -139,6 +156,8 @@ int main() {
         // Ask for Continuation
         cout << "Do you want to ask again?\n Press 'Y' and 'Enter' to Continue; Press 'N' and 'Enter' to Exit.\n";
         getline(cin, o);
+        pool.clear();
+        nums.clear();
         if (o == "Y" || o == "y") { continue; }
         break;
     }
