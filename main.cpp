@@ -5,7 +5,6 @@
 #include <vector>
 #include <ctime>
 
-
 using namespace std;
 
 auto init = []{
@@ -49,8 +48,6 @@ void makeChoice(vector<string>& pool) {
         return;
     } else {
         showContent(pool);
-        // uniform_int_distribution<int> d(0, pool.size() - 1);
-        // mt19937 en(time(nullptr));
         cout << "I suggest you choose: " << pool[randGenerate(pool.size())] << "\n";
     }
 }
@@ -123,13 +120,43 @@ void enterNumber(vector<int>& nums) {
     }
 }
 
+vector<int> solveSlime(vector<int>& slime) {
+    int n = slime.size();
+    vector<int> left(n), right(n);
+    vector<int> ans;
+    for (int i = 0; i < n; ++i) {
+        left[i] = slime[i] == 0;
+        right[i] = slime[i] == 1;
+    }
+    
+    
+    for (int i = 1; i <= n; ++i) {
+        for (int i = 0; i < n - 1; ++i) {
+            left[i] = left[i + 1];
+        }
+        if (i == 1) left[n - 1] = 0;
+        for (int i = n - 1; i > 0; --i) {
+            right[i] = right[i - 1];
+        }
+        if (i == 1) right[0] = 0;
+        
+        vector<int> tmp(n);
+        for (int i = 0; i < n; ++i) {
+            tmp[i] = left[i] | right[i];
+        }
+        int sz = std::count(tmp.begin(), tmp.end(), 1);
+        ans.emplace_back(n - sz);
+    }
+    return ans;
+}
+
 int main() {
     string line = "";
     vector<string> pool;
     vector<int> nums;
     
     while (1) {
-        cout << "please enter options, 0 for RNG, 1 for board, 2 for quick sort\n";
+        cout << "please enter options, 0 for RNG, 1 for board, 2 for quick sort, 3 for SlimeSolving\n";
         string o = "";
         getline(cin, o);
         // Dinner option RNG
@@ -144,6 +171,19 @@ int main() {
             enterNumber(nums);
             cout << std::endl;
             nums.clear();
+        } else if (o == "3") {
+            int k = 0;
+            cin >> k;
+            vector<int> slime(k);
+            for (int i = 0; i < k; ++i) {
+                cin >> slime[i];
+            }
+            auto t = solveSlime(slime);
+
+            for (auto& i : t) {
+                cout << i << " ";
+            }
+            cout << "\n";
         } else {
             vector<int> test = {0, 1, 2, 3, 4, 5};
             std::fill(test.begin(), test.begin() + 1, 9);
@@ -151,7 +191,6 @@ int main() {
                 cout << e << " ";
             }
             cout << "\n";
-            cout << "invalid option\n";
         }
         // Ask for Continuation
         cout << "Do you want to ask again?\n Press 'Y' and 'Enter' to Continue; Press 'N' and 'Enter' to Exit.\n";
