@@ -78,13 +78,11 @@ vector<vector<int>> generateBoard(int n) {
 }
 
 int partition(vector<int>& nums, int low, int high) {
-    int pivot = nums[high];
-    int i = low - 1;
+    int pivot = nums[high], i = low - 1;    // a place for pivot to stay
     for (int j = low; j < high; ++j) {
         if (nums[j] < pivot) {
-            ++i;
-            swap(nums[i], nums[j]);
-
+            ++i;                            // Update the place, proceed to next
+            std::swap(nums[i], nums[j]);
         }
     }
     swap(nums[i + 1], nums[high]);
@@ -93,6 +91,8 @@ int partition(vector<int>& nums, int low, int high) {
 
 void quicksort(vector<int>& nums, int low, int high) {
     if (low <= high) {
+        int i = rand() % (high - low + 1) + low;    // randomized
+        std::swap(nums[i], nums[high]);
         int p = partition(nums, low, high);
         quicksort(nums, low, p - 1);
         quicksort(nums, p + 1, high);
@@ -113,6 +113,7 @@ void enterNumber(vector<int>& nums) {
     if (nums.empty()) {
         cout << "You haven't entered anything.\n";
     } else {
+        srand((unsigned)time(nullptr));
         quicksort(nums, 0, nums.size() - 1);
         for (auto& i : nums) {
             cout << i << " ";
