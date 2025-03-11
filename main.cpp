@@ -99,7 +99,7 @@ void quicksort(vector<int>& nums, int low, int high) {
     }
 }
 
-void enterNumber(vector<int>& nums) {
+void enterNumberQuick(vector<int>& nums) {
     string line = "";
     getline(cin, line);
     if (line.empty()) {
@@ -115,6 +115,66 @@ void enterNumber(vector<int>& nums) {
     } else {
         srand((unsigned)time(nullptr));
         quicksort(nums, 0, nums.size() - 1);
+        for (auto& i : nums) {
+            cout << i << " ";
+        }
+    }
+}
+
+void maxHeapify(vector<int>& nums, int i, int len) {
+    while ((i << 1) + 1 <= len) {
+        int lson = (i << 1) + 1;
+        int rson = (i << 1) + 2;
+        int large;
+        if (lson <= len && nums[lson] > nums[i]) {
+            large = lson;
+        } else {
+            large = i;
+        }
+        if (rson <= len && nums[rson] > nums[large]) {
+            large = rson;
+        }
+        if (large != i) {
+            swap(nums[i], nums[large]);
+            i = large;
+        } else {
+            break;
+        }
+    }
+}
+
+void buildMaxHeap(vector<int>& nums, int len) {
+    for (int i = len / 2; i >= 0; --i) {
+        maxHeapify(nums, i, len);
+    }
+}
+
+void heapsort(vector<int>& nums) {
+    int len = (int)nums.size() - 1;
+    buildMaxHeap(nums, len);
+    for (int i = len; i >= 1; --i) {
+        swap(nums[i], nums[0]);
+        len -= 1;
+        maxHeapify(nums, 0, len);
+    }
+}
+
+void enterNumberHeap(vector<int>& nums) {
+    string line = "";
+    cin.ignore();
+    getline(cin, line);
+    if (line.empty()) {
+        cout << "You haven't provided anything yet.\n";
+        return;
+    }
+    istringstream ss(line);
+    string n = "";
+    while (ss >> n) nums.emplace_back(std::stoi(n));
+
+    if (nums.empty()) {
+        cout << "You haven't entered anything.\n";
+    } else {
+        heapsort(nums);
         for (auto& i : nums) {
             cout << i << " ";
         }
@@ -169,7 +229,13 @@ int main() {
             vector<vector<int>> b = generateBoard(4);
             showBoard(b);
         } else if (o == "2") {
-            enterNumber(nums);
+            int k = 0;
+            cin >> k;
+            if (k) {
+                enterNumberHeap(nums);
+            } else {
+                enterNumberQuick(nums);
+            }
             cout << std::endl;
             nums.clear();
         } else if (o == "3") {
