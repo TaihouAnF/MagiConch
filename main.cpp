@@ -211,6 +211,24 @@ vector<int> solveSlime(vector<int>& slime) {
     return ans;
 }
 
+int knapsack(vector<int>& weights, vector<int>& values, int capacity) {
+    int n = values.size();
+    vector<vector<int>> memo(n, vector<int>(capacity, -1));
+    function<int(int, int)> dfs = [&](int i, int c) -> int {
+        if (i < 0) {
+            return 0;
+        }
+        int& res = memo[i][c];
+        if (res != -1) return res;
+        if (c < weights[i]) {
+            return res = dfs(i - 1, c);
+        }
+        return res = max(dfs(i - 1, c), dfs(i - 1, c - weights[i]) + values[i]);
+    }
+
+    return dfs(n - 1, capacity);
+} 
+
 int main() {
     string line = "";
     vector<string> pool;
